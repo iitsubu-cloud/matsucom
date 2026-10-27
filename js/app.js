@@ -1,11 +1,11 @@
 // 画面遷移と全体の配線。
 //   起動画面（役割・合言葉）→「通信開始」→ メイン画面（地図・押して話す）
 
-import { GROUP_COUNT, MAX_GROUPS, ROLE_COLORS } from './config.js?v=1';
-import * as transport from './transport.js?v=1';
-import * as voice from './voice.js?v=1';
-import * as geo from './location.js?v=1';
-import * as mapView from './map.js?v=1';
+import { GROUP_COUNT, MAX_GROUPS, ROLE_COLORS } from './config.js?v=2';
+import * as transport from './transport.js?v=2';
+import * as voice from './voice.js?v=2';
+import * as geo from './location.js?v=2';
+import * as mapView from './map.js?v=2';
 
 const $ = (id) => document.getElementById(id);
 
@@ -134,6 +134,8 @@ function setNotice(key, text) {
 }
 
 function showTalker(talker) {
+  // 他の人が話している間は、押して話すボタンを灰色にする（自分が話している間は talker が来ないので赤のまま）
+  pttBtn.classList.toggle('busy', !!talker);
   if (!talker) {
     bannerEl.hidden = true;
     bannerEl.textContent = '';
@@ -183,10 +185,10 @@ let mapReady = false;
 let selfPos = null;
 let knownPeerIds = new Set();
 let wired = false;
-const pendingLocs = new Map(); // 地図の準備前に届いた位置 id -> { role, lat, lng }
+const pendingLocs = new Map(); // 地図の準備前に届いた位置 role -> { lat, lng }（他の人の印は役割ごとに1つ）
 
 function placeSelf() {
-  if (mapReady && selfPos) mapView.setMarker(me.id, me.role, selfPos.lat, selfPos.lng, true);
+  if (mapReady && selfPos) mapView.setMarker(me.role, selfPos.lat, selfPos.lng, true);
 }
 
 function wireTransport() {
@@ -198,19 +200,19 @@ function wireTransport() {
     if (!p || !isValidRole(p.role)) return;
     if (!Number.isFinite(p.lat) || !Number.isFinite(p.lng)) return;
     if (!mapReady) {
-      pendingLocs.set(from, { role: p.role, lat: p.lat, lng: p.lng });
+      pendingLocs.set(p.role, { lat: p.lat, lng: p.lng });
       return;
     }
-    mapView.setMarker(from, p.role, p.lat, p.lng, false);
+    mapView.setMarker(p.role, p.lat, p.lng, false);
   });
 
-  // 在室の変化: 新しく入った人には自分の位置をすぐ送る。いなくなった人の印は消す
+  // 在室の変化: 新しく入った人には自分の位置をすぐ送る。いなくなった人の印は消さず、薄くして最後の位置を残す
   transport.onPeers((list) => {
     const ids = new Set(list.map((p) => p.id));
     let someoneNew = false;
     for (const id of ids) if (!knownPeerIds.has(id)) someoneNew = true;
-    for (const id of knownPeerIds) if (!ids.has(id) && mapReady) mapView.removeMarker(id);
     knownPeerIds = ids;
+    mapView.setPresentRoles(list.map((p) => p.role));
     if (someoneNew) geo.sendNow();
   });
 }
@@ -222,6 +224,7 @@ function teardown() {
   releaseWakeLock();
   transport.leave();
   knownPeerIds = new Set();
+  mapView.setPresentRoles([]);
   pendingLocs.clear();
 }
 
@@ -268,7 +271,7 @@ async function onStart() {
     modeBadgeEl.hidden = !transport.isLocal;
     mapView.initMap(mapEl);
     mapReady = true;
-    for (const [id, l] of pendingLocs) mapView.setMarker(id, l.role, l.lat, l.lng, false);
+    for (const [role, l] of pendingLocs) mapView.setMarker(role, l.lat, l.lng, false);
     pendingLocs.clear();
 
     if (mic.ok) {

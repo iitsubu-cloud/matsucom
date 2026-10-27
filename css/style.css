@@ -1,4 +1,4 @@
-/* 祭り連絡 v0.1 — 縦画面のスマホ前提。iPad でも崩れない。 */
+/* MatsuCom v0.1 — 縦画面のスマホ前提。iPad でも崩れない。 */
 
 :root {
   --bg: #f4f1ea;
@@ -272,6 +272,11 @@ input {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* 他の人が話している間（押しても送信しない）は灰色。自分が話している間の赤が優先 */
+.ptt-btn.busy {
+  background: #9e9e9e;
+}
+
 .ptt-btn.talking {
   background: #d50000;
 }
@@ -286,10 +291,38 @@ input {
    地図の印
 --------------------------------------------------------------- */
 
+.mk-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
 .mk {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* 電波が切れた人の「最後の位置」: 印を薄くして、下に経過分数を添える */
+.mk.mk-faded {
+  opacity: 0.4;
+}
+
+.mk-label {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 3px;
+  padding: 1px 5px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.85);
+  color: #111;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.3;
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 .mk-group {
