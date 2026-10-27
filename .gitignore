@@ -1,0 +1,8 @@
+# 依存・OS
+node_modules/
+.DS_Store
+
+# 秘密情報
+.env
+.env.*
+!.env.example
