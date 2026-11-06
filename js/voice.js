@@ -12,8 +12,8 @@
 //     null   … 送信側の track を外し、RTP パケットを送らない（replaceTrack(null)）
 //     silent … track を付けたまま enabled の切り替えだけ（無音のパケットを送り続ける。比較用）
 
-import { ICE_SERVERS } from './config.js?v=2';
-import * as transport from './transport.js?v=2';
+import { ICE_SERVERS } from './config.js?v=3';
+import * as transport from './transport.js?v=3';
 
 const query = new URLSearchParams(window.location.search);
 const AUDIO_MODE = (query.get('audio') || 'B').toUpperCase();

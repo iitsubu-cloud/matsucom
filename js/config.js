@@ -2,8 +2,9 @@
 // SUPABASE_URL / SUPABASE_ANON_KEY が空のときは、自動でローカル試験モード（BroadcastChannel）になる。
 
 // Supabase（公開キーのみ。v0.1 ではサインインしない）
-export const SUPABASE_URL = '';
-export const SUPABASE_ANON_KEY = '';
+// プロジェクト matsucom（組織 iitsubu-cloud、東京）。キーは publishable キー（旧 anon キーは 2027 年初めに廃止予定）
+export const SUPABASE_URL = 'https://aspxtujvhsvjanxacqmf.supabase.co';
+export const SUPABASE_ANON_KEY = 'sb_publishable_yuJOUAA-WcBg4cswoXXTiQ__1R9Pmdd';
 
 // WebRTC の ICE サーバー。TURN はユーザーの登録後にここへ追加する。
 // 例: { urls: 'turn:example.com:3478', username: '...', credential: '...' }

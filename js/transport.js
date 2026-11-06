@@ -2,7 +2,7 @@
 //   join(room, me) / send(type, payload) / on(type, cb) / onPeers(cb) / leave()
 // me = { id, role }。on の cb は (payload, fromId)。onPeers の cb は在室一覧 [{ id, role }]（自分を除く）。
 
-import { SUPABASE_URL, SUPABASE_ANON_KEY } from './config.js?v=2';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from './config.js?v=3';
 
 const SUPABASE_ESM = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 

@@ -4,7 +4,7 @@
 //   setPresentRoles(roles)            … 在室している役割の一覧（自分を除く）。いない役割の印は薄くして最後の位置を残す
 //   textColorFor(hex)                 … 背景色の上に載せる文字色（白か黒）
 
-import { ROLE_COLORS } from './config.js?v=2';
+import { ROLE_COLORS } from './config.js?v=3';
 
 // 国土地理院の標準地図タイル（出典の表示が必要）
 const TILE_URL = 'https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png';

@@ -1,11 +1,11 @@
 // 画面遷移と全体の配線。
 //   起動画面（役割・合言葉）→「通信開始」→ メイン画面（地図・押して話す）
 
-import { GROUP_COUNT, MAX_GROUPS, ROLE_COLORS } from './config.js?v=2';
-import * as transport from './transport.js?v=2';
-import * as voice from './voice.js?v=2';
-import * as geo from './location.js?v=2';
-import * as mapView from './map.js?v=2';
+import { GROUP_COUNT, MAX_GROUPS, ROLE_COLORS } from './config.js?v=3';
+import * as transport from './transport.js?v=3';
+import * as voice from './voice.js?v=3';
+import * as geo from './location.js?v=3';
+import * as mapView from './map.js?v=3';
 
 const $ = (id) => document.getElementById(id);
 
