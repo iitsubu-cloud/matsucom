@@ -2,23 +2,20 @@
 
 <!-- ⚠️ このファイルの冒頭が進捗と次タスクの唯一の正。セッション終了時に必ず更新すること。 -->
 
-## 現在の状態（最終更新: 2026-10-27 セッション1 終了時）
+## 現在の状態（最終更新: 2026-11-06 セッション2）
 
 - **アプリ**: MatsuCom（仮名）。地域の秋祭りで、太鼓台のリーダーと3〜4班の班長がトランシーバー式で話し、互いの位置を地図で見る Web アプリ。**本番 2027年10月**
-- **フェーズ**: 試作 v0.1.1 が Mac のブラウザ（ローカル試験モード）で動作確認済み。GitHub に公開済み。**実機テストの準備中**
-- **公開**: リポジトリ https://github.com/iitsubu-cloud/matsucom （公開、main）／ GitHub Pages https://iitsubu-cloud.github.io/matsucom/
-  - ⚠️ `config.js` の Supabase 設定がまだ空なので、公開版は**ローカル試験モード**（同じブラウザ内のタブどうししかつながらない）。端末どうしをつなぐには次の1手が必要
-- **タグ**: `v0.1-local`、`v0.1.1-local`（どちらも作業タグ。実機未確認）。安定タグなし
+- **フェーズ**: **Supabase 接続済み**（v0.1.2）。Mac の2タブで本物の Supabase 経由の在室・位置・押して話すを確認済み。GitHub に push 済み。**実機テスト待ち**
+- **公開**: リポジトリ https://github.com/iitsubu-cloud/matsucom （公開、main）／ GitHub Pages https://iitsubu-cloud.github.io/matsucom/ （`?v=3`）
+- **Supabase**: プロジェクト `matsucom`（組織 iitsubu-cloud、Free、東京）。ダッシュボード https://supabase.com/dashboard/project/aspxtujvhsvjanxacqmf 。キーは **publishable キー**（旧 anon キーは 2027 年初めに廃止予定）。Realtime の「Allow public access to channels」は既定で ON。データベースのパスワードはユーザーが保管（指揮役は知らない）。ブラウザペインにユーザーのサインインが残っている
+- **タグ**: `v0.1-local`、`v0.1.1-local`、`v0.1.2-supabase`（いずれも作業タグ。実機未確認）。安定タグなし
+- 記録: [docs/logs/2026-11/06-supabase-connect.md](docs/logs/2026-11/06-supabase-connect.md)
 
 ### 次回の1手（この順で）
 
-1. **Supabase の登録をユーザーに1手ずつ案内**（登録はユーザー本人が行う。指揮役はアカウントを作らない）
-   - (a) https://supabase.com/dashboard →「Continue with GitHub」（GitHub アカウント iitsubu-cloud）
-   - (b) 新しい project: 名前 `matsucom`、リージョン **Northeast Asia (Tokyo)**、データベースのパスワードはユーザーが生成・保管し、**チャットに貼らせない**（アプリでは使わない）
-   - (c) Project URL と公開用キー（anon／publishable。ブラウザに置く前提のキーなので共有してよい）を教えてもらう
-   - (d) Realtime の設定で、公開チャンネル（サインインなしの Broadcast／Presence）が使えるか確認する（v0.1 はサインインしない作り）
-2. `js/config.js` に URL とキーを入れる → `sed -i '' 's/?v=2/?v=3/g' index.html js/*.js` でキャッシュ番号を上げる → コミット → `git push origin main --tags`
-3. デプロイ確認: `curl -s https://iitsubu-cloud.github.io/matsucom/ | grep 'app.js?v='` で新しい番号が出るか見る（GitHub Pages が詰まったときの回避は ComChat の記録を参照）
+1. （済）Supabase 登録・`config.js` 設定・`?v=3`・push（2026-11-06）
+2. （済）デプロイ確認は `curl -s https://iitsubu-cloud.github.io/matsucom/ | grep 'app.js?v='`
+3. ⚠️ 作成直後に1回だけ参加が `TIMED_OUT`（10秒）→ 再試行で成功、以後14回は全成功（0.5〜1.2秒）。実機で「接続できませんでした」が出るなら、画面を変えずに自動再試行を足す
 4. **実機テスト**（ユーザー）: 2台以上（iPhone と Android が混ざるとなお良い）、**Wi-Fi を切って携帯回線で**。確認依頼は「URL・操作・期待される結果」の3点セットで出す。確かめること:
    - (1) iPhone で相手の声が小さくならないか、受話口から出ないか → `?audio=A`／`B`（既定）／`C` を聞き比べ
    - (2) ホーム画面アプリだと起動ごとにマイクの許可を聞かれるか。Safari で開く場合と比較
